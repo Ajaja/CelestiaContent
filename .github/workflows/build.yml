@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    name: Windows x64
+
+    runs-on: windows-latest
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+
+      - name: Cache cmake build
+        uses: actions/cache@v4
+        with:
+          path: build
+          key: windows-x64-cmake-v1
+
+      - name: Configure
+        run: |
+          cmake \
+            -B build \
+            -A x64 \
+            # EOL
+
+      - name: Build
+        run: |
+          cmake \
+            --build build \
+            --config Release \
+            # EOL
+
+      - name: Upload Release Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: CelestiaContent
+          path: build/Release/
+          if-no-files-found: error            
