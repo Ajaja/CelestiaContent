@@ -1,8 +1,6 @@
 name: Build
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -15,16 +13,19 @@ jobs:
       - name: Install ImageMagick
         run: choco install imagemagick -y
 
-      - name: Add ImageMagick to PATH
+      - name: Locate ImageMagick
+        shell: pwsh
         run: |
-          $path = Get-ChildItem "C:\Program Files" -Filter "ImageMagick-*" | Select-Object -First 1
-          echo "$($path.FullName)" >> $env:GITHUB_PATH
+          $dir = Get-ChildItem "C:\Program Files" -Directory | Where-Object { $_.Name -like "ImageMagick-*" } | Select-Object -First 1
+          echo "IM_DIR=$($dir.FullName)" >> $env:GITHUB_ENV
 
       - name: Configure CMake
         run: >
           cmake -S . -B build
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\install
+          -DImageMagick_convert_EXECUTABLE="$env:IM_DIR\convert.exe"
+          -DImageMagick_identify_EXECUTABLE="$env:IM_DIR\identify.exe"
 
       - name: Build
         run: cmake --build build --config Release
