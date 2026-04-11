@@ -1,6 +1,8 @@
-name: Package CelestiaContent
+name: Build
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -8,8 +10,15 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Install ImageMagick
+        run: choco install imagemagick -y
+
+      - name: Add ImageMagick to PATH
+        run: |
+          $path = Get-ChildItem "C:\Program Files" -Filter "ImageMagick-*" | Select-Object -First 1
+          echo "$($path.FullName)" >> $env:GITHUB_PATH
 
       - name: Configure CMake
         run: >
@@ -17,7 +26,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\install
 
-      - name: Build (no-op)
+      - name: Build
         run: cmake --build build --config Release
 
       - name: Install
