@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ImageMagick
+        run: choco install imagemagick -y
+
+      - name: Locate ImageMagick
+        shell: pwsh
+        run: |
+          $dir = Get-ChildItem "C:\Program Files" -Directory | Where-Object { $_.Name -like "ImageMagick-*" } | Select-Object -First 1
+          echo "IM_DIR=$($dir.FullName)" >> $env:GITHUB_ENV
+
+      - name: Configure CMake (Ninja)
+        run: >
+          cmake -S . -B build
+          -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\install
+          -DImageMagick_magick_EXECUTABLE="$env:IM_DIR\magick.exe"
+          -DImageMagick_convert_EXECUTABLE="$env:IM_DIR\magick.exe"
+          -DImageMagick_identify_EXECUTABLE="$env:IM_DIR\magick.exe"          
+    
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Install
+        run: cmake --install build --config Release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CelestiaContent
+          path: install
