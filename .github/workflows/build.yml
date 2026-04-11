@@ -26,6 +26,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\install
           -DImageMagick_magick_EXECUTABLE="$env:IM_DIR\magick.exe"
+          -DImageMagick_convert_EXECUTABLE="$env:IM_DIR\magick.exe"
+          -DImageMagick_identify_EXECUTABLE="$env:IM_DIR\magick.exe"          
     
       - name: Build
         run: cmake --build build --config Release
