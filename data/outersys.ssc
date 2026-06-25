@@ -300,8 +300,8 @@
 		AscendingNode	38  # position angle = 110.97° +7.00° -6.54°
 	}
 	LunarLambert	1
-	# GeomAlbedo	0.106
-	Reflectivity	0.033  # For qV = 0.315 +0.032 -0.014
+	GeomAlbedo	0.106
+	SphAlbedo	0.033  # For qV = 0.315 +0.032 -0.014
 	InfoURL	"https://en.wikipedia.org/wiki/28978_Ixion"
 }
 
@@ -336,7 +336,7 @@ ReferencePoint "Huya System" "Sol"
 "38628 Huya:Huya:2000 EB173" "Sol"
 {
 	Class	"asteroid"
-	Mesh	"roughsphere.cms"
+	Mesh	"sphere.cms"
 	Texture	"asteroid.*"
 	Color	[ 0.522 0.463 0.388 ]
 	BlendTexture	true
@@ -674,7 +674,7 @@ ReferencePoint "Lempo-Hiisi" "Sol"
 "78799 Xewioso:Xewioso:2002 XW93" "Sol"
 {
 	Class	"asteroid"
-	Mesh	"roughsphere.cms"
+	Mesh	"sphere.cms"
 	Texture	"asteroid.*"
 	Color	[ 0.323 0.323 0.323 ]  # no color data
 	BlendTexture	true
@@ -844,7 +844,7 @@ ReferencePoint "Salacia-Actaea" "Sol"
 "145451 Rumina:Rumina:2005 RM43" "Sol"
 {
 	Class	"asteroid"
-	Mesh	"roughsphere.cms"
+	Mesh	"sphere.cms"
 	Texture	"asteroid.*"
 	Color	[ 0.539 0.529 0.515 ]
 	BlendTexture	true
@@ -979,7 +979,7 @@ ReferencePoint "Varda-Ilmarë" "Sol"
 "Ilmarë:174567 Varda I:Varda I" "Sol/Varda"
 {
 	Class	"asteroid"
-	Mesh	"roughsphere.cms"
+	Mesh	"sphere.cms"
 	Texture	"asteroid.*"
 	Color	[ 0.478 0.429 0.386 ]
 	BlendTexture	true
@@ -1169,15 +1169,15 @@ ReferencePoint "Varda-Ilmarë" "Sol"
 		AscendingNode	106  # position angle = 121° ± 16°
 	}
 	LunarLambert	1
-	# GeomAlbedo	0.105
-	Reflectivity	0.039  # Bond albedo
+	GeomAlbedo	0.105
+	SphAlbedo	0.039  # Bond albedo
 	InfoURL	"https://en.wikipedia.org/wiki/307261_Máni"
 }
 
 "471143 Dziewanna:Dziewanna:2010 EK139" "Sol"
 {
 	Class	"asteroid"
-	Mesh	"roughsphere.cms"
+	Mesh	"sphere.cms"
 	Texture	"asteroid.*"
 	Color	[ 0.938 0.866 0.802 ]
 	BlendTexture	true
@@ -1242,8 +1242,8 @@ ReferencePoint "Varda-Ilmarë" "Sol"
 		MeridianAngle	71.9541475
 	}
 	LunarLambert	0.970
-	# GeomAlbedo	0.21
-	Reflectivity	0.062  # Bond albedo at 610 nm
+	GeomAlbedo	0.21
+	SphAlbedo	0.062  # Bond albedo at 610 nm
 	InfoURL	"https://en.wikipedia.org/wiki/486958_Arrokoth"
 }
 
