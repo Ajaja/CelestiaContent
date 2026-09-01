@@ -187,7 +187,8 @@
 		#   "Cloud structure in Venus middle-to-lower atmosphere as inferred from VEX/VIRTIS 1.74 μm data"
 		#   https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2008JE003184
 		#   https://ui.adsabs.harvard.edu/abs/2009JGRE..114.0B37S/abstract
-		#MieHGAnisotropy	0.6
+		Mie	0.5
+		MieHGAnisotropy	0.6
 
 		CloudHeight	65
 		CloudSpeed	90  # 90 degrees/day motion = 4 days super-rotation
@@ -249,15 +250,14 @@
 		#   https://opg.optica.org/ao/abstract.cfm?uri=ao-34-15-2765 [Paywalled]
 		#   R = 0.68 μm, G = 0.55 μm, B = 0.44 μm
 		Rayleigh	[ 0.004847 0.01149 0.02870 ]
-		MieScaleHeight	8.5  # Rayleigh scale height
+		RayleighScaleHeight	8.5
 
         # Bruneton & Neyret (2008), Special Issue: Proceedings of the 19th Eurographics Symposium on Rendering 27 (4), pp.1079-1086
         #   "Precomputed Atmospheric Scattering"
         #   https://inria.hal.science/inria-00288758/en
-		# - Mie scattering coefficient (B{_M}{^s}) = 0.01 km^-1
-        Mie	0.0014
+        Mie	0.01
         MieHGAnisotropy	0.76
-        #MieScaleHeight	1.2  # the real Mie scale height
+        MieScaleHeight	1.2
 
 		# Approximating absorption due to gases in the atmosphere.
 		#   O2: 0.2095 (corrected with /1.004 to account for H2O)
@@ -549,15 +549,25 @@
 	Color	[ 1.0 0.98663 0.91433 ]
 	SemiAxes	[ 71488 71488 66842 ]
 	Mass<kg>	1.898125e27
-	Atmosphere  # upper clouds at 0.6 bar
+
+	# Atmosphere base: 0.55 bar (Cloud-2)
+	# Irwin et al. (2026) preprint
+	#   "Cloud and ammonia vertical profiles in the equatorial atmosphere of Jupiter determined from visible to near-IR observations made by VLT/MUSE, Cassini/VIMS, IRTF/SpeX and Juno/JIRAM"
+	#   https://arxiv.org/abs/2607.25542
+	Atmosphere
 	{
-		Height	1000
-		Mie	0.0001
-		MieScaleHeight	28
-		MieHGAnisotropy	0.15
-		Rayleigh	[ 0.00095 0.00145 0.00298 ]  # from optical thickness 0.17 at 500 nm
-		Absorption	[ 0.00033 0.00010 0.00001 ]  # total absorption 0.0301 0.0094 0.00002
-	}  # assuming 2 atmospheres of light travel
+		Height	170
+
+		Rayleigh	[ 0.00107 0.00254 0.00639 ]
+		MieScaleHeight	17.5
+
+		Mie	0.001
+		MieHGAnisotropy	0.6
+
+		# Approximating absorption due to gases in the atmosphere.
+		#   CH4: 0.0018
+		Absorption	[ 0.00024 0.00003 0.00000 ]
+	}
 	CustomOrbit	"vsop87-jupiter"
 
 	# Overridden by CustomOrbit
@@ -821,13 +831,25 @@ AltSurface "Limit of knowledge" "Sol/Jupiter/Callisto"
 	Color	[ 1.0 0.9476 0.81514 ]
 	SemiAxes	[ 60268 60268 54364 ]
 	Mass<kg>	5.68317e26  # GM = (37931206.234 ± 0.726) km^3/s^2
-	Atmosphere  # upper clouds at 0.4 bar
+
+	# Atmosphere base: 0.15 bar (tropopause / top of tropospheric haze)
+	# Roman et al. (2013), Icarus 225 (1), p. 93-110
+	#   "Saturn's cloud structure inferred from Cassini ISS"
+	#   https://www.sciencedirect.com/science/article/abs/pii/S0019103513001255
+	#   https://scixplorer.org/abs/2013Icar..225...93R/abstract
+	Atmosphere
 	{
-		Height	1000
-		Mie	0.0001
-		MieScaleHeight	59.5
-		Rayleigh	[ 0.00068 0.00103 0.00213 ]
-		Absorption	[ 0.00016 0.00005 0.00001 ]  # total absorption: 0.0306 0.0102 0.0015
+		Height	340
+
+		Rayleigh	[ 0.00053 0.00126 0.00318 ]
+		MieScaleHeight	34
+
+		Mie	0.001
+		MieHGAnisotropy	0.6
+
+		# Approximating absorption due to gases in the atmosphere.
+		#   CH4: 0.0044
+		Absorption	[ 0.00027 0.00003 0.00000 ]
 	}
 	CustomOrbit	"vsop87-saturn"
 
@@ -1340,13 +1362,26 @@ AltSurface "Limit of knowledge" "Sol/Jupiter/Callisto"
 	Color	[ 0.86828 0.97 1.0 ]
 	SemiAxes	[ 25556.6 25556.6 24968.7 ]
 	Mass<kg>	8.68099e25  # GM = (5793950.61 ± 2.16) km^3/s^2
+
+	# Atmosphere base: 1 bar (Aerosol-2)
+	# Irwin et al. (2022), JGR: Planets 127 (6), article id. e07189
+	#   "Hazy Blue Worlds: A Holistic Aerosol Model for Uranus and Neptune, Including Dark Spots"
+	#   https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022JE007189
+	#   https://ui.adsabs.harvard.edu/abs/2022JGRE..12707189I/abstract
 	Atmosphere
 	{
-		Height	500
-		Mie	0.0014
-		MieScaleHeight	27.7
-		MieHGAnisotropy	0.1
-		Rayleigh	[ 0.00026 0.00048 0.00100 ]
+		Height	240
+
+		Rayleigh	[ 0.00346 0.00822 0.02067 ]
+		MieScaleHeight	24
+
+		# Mie coefficient from Irwin et al. (2022), JGR: Planets 127 (6), article id. e07189
+		# Aerosol-3 opacity (τ_3) at 0.8 μm = 0.03
+		#   scaled by 2 (fudge to get opacity at 0.55 μm), divided by scale height = 24 km
+		Mie	0.0025
+
+		# Absorption from haze, assuming Titan haze absorption.
+		Absorption	[ 0.0017 0.0019 0.0025 ]
 	}
 	CustomOrbit	"vsop87-uranus"
 
@@ -1634,14 +1669,23 @@ AltSurface "Limit of knowledge" "Sol/Jupiter/Callisto"
 	Color	[ 0.78302 0.91535 1.0 ]
 	SemiAxes	[ 24760.6 24760.6 24285.3 ]
 	Mass<kg>	1.024092e26
+
+	# Atmosphere base: 1 bar (Aerosol-2)
+	# Irwin et al. (2022), JGR: Planets 127 (6), article id. e07189
 	Atmosphere
 	{
-		Height	500
-		Mie	0.002
-		MieScaleHeight	20.3
-		MieHGAnisotropy	0.1
-		Rayleigh	[ 0.00104 0.00193 0.00400 ]
-		Absorption	[ 0.00000 0.00050 0.00100 ]
+		Height	180
+
+		Rayleigh	[ 0.00349 0.00830 0.02086 ]
+		MieScaleHeight	18
+
+		# Mie coefficient from Irwin et al. (2022), JGR: Planets 127 (6), article id. e07189
+		# Aerosol-3 opacity (τ_3) at 0.8 μm = 0.04
+		#   scaled by 2 (fudge to get opacity at 0.55 μm), divided by scale height = 18 km
+		Mie	0.0044
+
+		# Absorption from haze, assuming Titan haze absorption.
+		Absorption	[ 0.0029 0.0033 0.0044 ]
 	}
 	CustomOrbit	"vsop87-neptune"
 
@@ -1733,17 +1777,18 @@ AltSurface "Limit of knowledge" "Sol/Jupiter/Callisto"
 		Height	100
 
 		# Rayleigh coefficient multiplied by fudge factor to correct appearance.
-		#   Fudge factor: 3
-		# Rayleigh scale height and Mie anisotropy from Gao & Ohno (2024)
+		#   Fudge factor: 10
+		# Scale heights and Mie anisotropy from Gao & Ohno (2024)
 		#   "Clouds and Hazes in the Atmospheres of Triton and Pluto"
 		#   https://arxiv.org/abs/2411.12031
 		#   Mie anisotropy assumed to be the same as discrete component's.
-		Rayleigh	[ 0.0000016 0.0000037 0.0000093 ]
-		MieScaleHeight	16  # Rayleigh scale height
+		Rayleigh	[ 0.0000052 0.0000124 0.0000309 ]
+		RayleighScaleHeight	16
 		
 		# Mie coefficient scaled from Pluto's, using optical depth from Gao & Ohno (2024).
-		Mie	0.00000007
+		Mie	0.000003
 		MieHGAnisotropy	0.6
+		MieScaleHeight	11
 	}
 	CustomOrbit	"triton"
 
